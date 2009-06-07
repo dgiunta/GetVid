@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby -wKU
+
+require File.join File.dirname(__FILE__), '../get_vid'
+
+GetVid.configure do |config|
+  config.output_dir = "~/Desktop/Output"
+end
+
+collection = GetVid.from_links(ARGV)
+collection.download_and_export_audio
+collection.make_zips

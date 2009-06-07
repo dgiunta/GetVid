@@ -1,0 +1,30 @@
+h1. GetVid - YouTube video downloader and audio extractor library
+
+GetVid allows you to hand it a series of urls to YouTube videos and it will download the highest resolution video available, and rip the audio to an AIFF file using <code>qt_tools</code>
+
+h2. Installation
+
+Grab the source from GitHub: <code>http://github.com/dgiunta/get_vid</code>
+
+Feel free to use/customize the <code>get_vids</code> executable located in the <code>bin</code> directory.
+
+h2. Usage
+
+To use the binary, just pass a space-delimited set of youtube links to the <code>get_vids</code> command like so:
+
+<pre>
+./bin/get_vids http://www.youtube.com/watch?v=rK6zDHt3Ml0 http://www.youtube.com/watch?v=1Nmo1zEHhms http://www.youtube.com/watch?v=LXXAHe4V_4s http://www.youtube.com/watch?v=t1pKyKyMI8k http://www.youtube.com/watch?v=iwsWEHbbBfI
+</pre>
+
+By default the binary will download the video files using <code>wget</code>, and then extract the audio to .aif files, and then finally zip up both the video and audio into a combined zip archive, as well as individual audio and video archives.
+
+h2. Dependencies
+
+* <code>wget</code> for downloading the files. I would really like to remove this dependency, but unfortunately, I can't seem to get the various Ruby utilities to follow the necessary redirects. More on this in a moment.
+* <code>QuickTime</code> This does not have to be the Pro version, but is necessary to rip the audio.
+* <code>qt_tools</code> for exporting the audio from the downloaded video to AIFF format. This is another dependency I wouldn't mind breaking, but it's really fast and does the job rather well. I believe these tools only work on Unix-based systems.
+* <code>http://keepvid.com</code> This site is used by the application to get the url to the actual mp4 files on YouTube's servers. For the moment, this script is just parsing out the HTML looking for the download link supplied by keepvid.com. This would be another dependency that would be nice to internalize... perhaps to do the work that keepvid.com is doing internally.
+
+h2. Coming Soon
+
+I am hoping to build a Sinatra web application similar to keepvid.com that will allow you to hand a bunch of youtube urls to it, and then download the resulting files. Stay tuned.
