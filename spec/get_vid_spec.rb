@@ -14,6 +14,7 @@ describe GetVid, ".from_links" do
     end
     
     it "should return a Configuration object" do
+      GetVid.configure
       GetVid.config.should be_instance_of(GetVid::Configuration)
       GetVid.config.output_dir.should == File.expand_path("~/Desktop/GetVidOutput")
     end

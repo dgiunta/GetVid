@@ -10,7 +10,7 @@ module GetVid
       @output_dir = File.expand_path(fixture_path_for("TestOutput"))
       Time.stub!(:now).and_return(Time.parse("Sun Jun 07 12:28:22 -0500 2009"))
 
-      @video = Video.new("http://youtube.com")
+      @video = Video::Base.new("http://youtube.com")
       @collection = Collection.new([@video])
     end
     

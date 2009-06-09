@@ -3,7 +3,7 @@ require 'hpricot'
 require 'open-uri'
 require 'fileutils'
 
-Dir[File.join(File.dirname(__FILE__), "get_vid", "*.rb")].each { |f| require f }
+Dir[File.join(File.dirname(__FILE__), "get_vid", "**/*.rb")].each { |f| require f }
 
 module GetVid  
   def self.from_links(links)
