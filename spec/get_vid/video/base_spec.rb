@@ -16,7 +16,8 @@ module GetVid
         @download_link  = 'http://keepvid.com/save-video.mp4?http%3A%2F%2Fv13.lscache1.googlevideo.com%2Fvideoplayback%3Fip%3D0.0.0.0%26sparams%3Did%252Cexpire%252Cip%252Cipbits%252Citag%26itag%3D18%26ipbits%3D0%26sver%3D3%26expire%3D1244332800%26key%3Dyt1%26signature%3D8BDE5AC46DED1640E43E8B6E2E928D710CDF8318.548DAF24C32055F3E238AB874A47CB0343004E56%26id%3D2d75c01dee15ff8b'
       
         @video_output_file = File.join(fixture_path_for("TestOutput/Video", true), @filename) + ".mp4"
-        @audio_output_file = File.join(fixture_path_for("TestOutput/Audio", true), @filename[0..26].gsub(/[ -_]$/, '')) + ".aif"
+        @audio_output_file = File.join(fixture_path_for("TestOutput/Audio", true), @filename) + ".aif"
+        @mp3_audio_file    = File.join(fixture_path_for("TestOutput/Audio", true), @filename) + ".mp3"
       
         @gv = Base.new(@url)
         @gv.stub!(:open).with(@url).and_return(@original_src)
@@ -44,22 +45,17 @@ module GetVid
         it "should have a download_link" do
           @gv.send(:download_link).should == @download_link
         end
-    
-        it "should have a video filename" do
-          @gv.send(:video_filename).should == @filename + ".mp4"
-        end
-      
-        it "should have an audio filename no longer than 31 characters" do
-          @gv.send(:audio_filename).should have_at_most(31).characters
-          @gv.send(:audio_filename).should == "the_longest_yard_2006_here.aif"
-        end
-      
+
         it "should have a video filepath" do
-          @gv.send(:video_filepath).should == File.expand_path(File.join(fixture_path_for("TestOutput/Video"), @filename) + ".mp4")
+          @gv.send(:video_filepath).should == @video_output_file
         end
       
         it "should have an audio filepath" do
-          @gv.send(:audio_filepath).should == File.expand_path(File.join(fixture_path_for("TestOutput/Audio"), @filename[0..26].gsub(/[ _-]$/, '')) + ".aif")
+          @gv.send(:audio_filepath).should == @audio_output_file
+        end
+        
+        it "should have an mp3 filepath by passing the mp3 extension to audio_filepath" do
+          @gv.send(:audio_filepath, 'mp3').should == @mp3_audio_file
         end
       end
   
@@ -76,15 +72,26 @@ module GetVid
       end
     
       context "when exporting audio" do
-        it "should run the qt_export command" do        
-          @gv.should_receive(:system).with("sudo qt_export #{@video_output_file} #{@audio_output_file} --video=0 --replacefile")
+        it "should hand off audio processing to ffmpeg" do
+          IO.should_receive(:popen).with("ffmpeg -i #{@video_output_file} -nv #{@audio_output_file}")
           @gv.export_audio
         end
       
         it "should not run the qt_export command if the file already exists" do
           File.should_receive(:exists?).and_return(true)
-          @gv.should_not_receive(:system)
+          IO.should_not_receive(:popen)
           @gv.export_audio
+        end
+        
+        it "should convert the aif file to mp3" do
+          @gv.should_receive(:formatted_id3_tags).any_number_of_times.and_return("")
+          IO.should_receive(:popen).with("lame -h #{@audio_output_file} #{@mp3_audio_file}")
+          @gv.convert_audio_to_mp3
+        end
+        
+        it "should add ID3 tags to the mp3" do
+          @gv.send(:formatted_id3_tags).should include("--tt 'the longest yard 2006 (here comes the boom !)'")
+          @gv.send(:formatted_id3_tags).should include("--tc '#{@url}'")
         end
       end
     end

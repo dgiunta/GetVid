@@ -8,8 +8,8 @@ module GetVid
         @youtube_src = Hpricot(fixture("youtube_source.html"))
         
         @yt = YouTube.new(@url)
-        @yt.stub!(:open).with(@url).and_return(@youtube_src)
-        @yt.stub!(:original_src).and_return(@youtube_src)
+        @yt.stub!(:open).and_return(@youtube_src)
+        @yt.stub!(:original_src).any_number_of_times.and_return(@youtube_src)
       end
       
       context "when first created" do
@@ -27,6 +27,10 @@ module GetVid
         
         it "should have a download_token" do
           @yt.send(:download_token).should == "vjVQa1PpcFNDJwlyL7C73FGaxFTbOTWaBG1SEW4TuBw%3D"
+        end
+        
+        it "should add the contributor to the id3 tags" do
+          @yt.send(:formatted_id3_tags).should include("--ta 'mostafahendry'")
         end
       end
       

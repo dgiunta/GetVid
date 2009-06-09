@@ -22,14 +22,19 @@ module GetVid
       end
 
       def export_audio
-        unless File.exists?(audio_filename)
-          system("sudo qt_export #{video_filepath} #{audio_filepath} --video=0 --replacefile")
-        end
+        IO.popen("ffmpeg -i #{video_filepath} -nv #{audio_filepath}") unless File.exists?(audio_filepath)
       end
-
+      
+      def convert_audio_to_mp3
+        command = "lame -h #{audio_filepath} #{audio_filepath('mp3')}"
+        command << " " + formatted_id3_tags unless formatted_id3_tags.nil? || formatted_id3_tags.match(/[^ ]/).to_s.length == 0
+        IO.popen(command)
+      end
+      
       private
 
       def original_src
+        puts "called!"
         @original_src ||= open(@url) { |f| Hpricot(f) }
       end
 
@@ -53,21 +58,32 @@ module GetVid
       def formatted_filename
         filename
       end
-
-      def audio_filename
-        formatted_filename[0..26].sub(/[ -_]$/, '') + ".aif"
+      
+      def id3_tags
+        @id3_tags ||= {
+          :tt => title,
+          :tc => [url]
+        }
+      end
+      
+      # Template method that can be overridden in subclasses to alter the id3_tags hash above.
+      def additional_id3_tags
+        {}
+      end
+      
+      def formatted_id3_tags
+        id3_tags.merge!(additional_id3_tags).collect do |k, v|
+          v = v.join("\n") if v.is_a?(Array)
+          "--#{k} '#{v}'"
+        end.join(" ")
       end
 
-      def video_filename
-        formatted_filename + ".mp4"
+      def audio_filepath(extension = 'aif')
+        File.join(GetVid.config.audio_output_dir, [formatted_filename, extension].join("."))
       end
 
-      def audio_filepath
-        File.join(GetVid.config.audio_output_dir, audio_filename)
-      end
-
-      def video_filepath
-        File.join(GetVid.config.video_output_dir, video_filename)
+      def video_filepath(extension = 'mp4')
+        File.join(GetVid.config.video_output_dir, [formatted_filename, extension].join("."))
       end
     end
   end

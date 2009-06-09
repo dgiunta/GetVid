@@ -1,14 +1,20 @@
 module GetVid
   module Video
-    class YouTube < Video::Base
+    class YouTube < Base
       attr_reader :video_id
       
       def initialize(url)
         @video_id ||= url.match(/\?v=(.*)\&?/).captures[0]
         super
       end
-      
+
       private
+            
+      def additional_id3_tags
+        {
+          :ta => contributor
+        }
+      end
       
       def contributor
         @contributor ||= (original_src/'.contributor').first.inner_html
