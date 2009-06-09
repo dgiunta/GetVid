@@ -40,7 +40,7 @@ module GetVid
         end
       
         it "should grab the &t= value from the youtube source" do
-          @yt.send(:download_link).should == "http://www.youtube.com/get_video?video_id=LXXAHe4V_4s&t=vjVQa1PpcFNDJwlyL7C73FGaxFTbOTWaBG1SEW4TuBw%3D&fmt=22"
+          @yt.send(:download_link).should == "http://www.youtube.com/get_video?video_id=LXXAHe4V_4s&t=vjVQa1PpcFNDJwlyL7C73FGaxFTbOTWaBG1SEW4TuBw%3D&fmt=18"
         end
       end
     end

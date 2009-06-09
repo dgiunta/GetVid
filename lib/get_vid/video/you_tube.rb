@@ -26,11 +26,11 @@ module GetVid
       end
       
       def download_link
-        @download_link ||= "http://www.youtube.com/get_video?video_id=#{video_id}&t=#{download_token}&fmt=22"
+        @download_link ||= "http://www.youtube.com/get_video?video_id=#{video_id}&t=#{download_token}&fmt=18"
       end
       
       def formatted_filename
-        [contributor, filename].join(" ")
+        [contributor.gsub(/\W/, "_"), filename].join("-")
       end
     end
   end

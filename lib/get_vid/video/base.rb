@@ -17,7 +17,7 @@ module GetVid
       end
 
       def export_audio
-        IO.popen("ffmpeg -i #{video_filepath} -nv #{audio_filepath}") unless File.exists?(audio_filepath)
+        IO.popen("ffmpeg -i #{video_filepath} #{audio_filepath}") unless File.exists?(audio_filepath)
       end
       
       def convert_audio_to_mp3

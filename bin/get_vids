@@ -3,9 +3,25 @@
 require File.join File.dirname(__FILE__), '../get_vid'
 
 GetVid.configure do |config|
-  config.output_dir = "~/Desktop/Output"
+  config.output_dir = "~/Desktop/Output2"
 end
 
+print "Creating collection: "
 collection = GetVid.from_links(ARGV)
-collection.download_and_export_audio
-collection.make_zips
+puts "DONE"
+
+# print "Downloading files: "
+# collection.download
+# puts "DONE"
+
+print "Extracting audio: "
+collection.export_audio
+puts "DONE"
+
+print "Converting to MP3s: "
+collection.convert_audio_to_mp3
+puts "DONE"
+
+# print "Creating zip files: "
+# collection.make_zips
+# puts "DONE"
