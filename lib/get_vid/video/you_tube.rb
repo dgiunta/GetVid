@@ -4,7 +4,8 @@ module GetVid
       attr_reader :video_id
       
       def initialize(url)
-        @video_id ||= url.match(/\?v=(.*)\&?/).captures[0]
+        vid_id = url.match(/\?v=(.*)\&?/)
+        @video_id ||= vid_id.captures[0] unless vid_id.nil?
         super
       end
 

@@ -3,11 +3,6 @@ module GetVid
     class Base
       attr_reader :url
 
-      def self.from_links(links)
-        links = links.kind_of?(Array) ? links : links.split(/\n/)
-        Collection.new(links.collect { |url| new(url) })
-      end
-
       def initialize(url)
         @url = url
       end
@@ -34,7 +29,6 @@ module GetVid
       private
 
       def original_src
-        puts "called!"
         @original_src ||= open(@url) { |f| Hpricot(f) }
       end
 
