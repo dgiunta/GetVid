@@ -17,13 +17,13 @@ module GetVid
       end
 
       def export_audio
-        IO.popen("ffmpeg -i #{video_filepath} #{audio_filepath}") unless File.exists?(audio_filepath)
+        system("ffmpeg -i #{video_filepath} #{audio_filepath}") unless File.exists?(audio_filepath)
       end
       
       def convert_audio_to_mp3
         command = "lame -h #{audio_filepath} #{audio_filepath('mp3')}"
         command << " " + formatted_id3_tags unless formatted_id3_tags.nil? || formatted_id3_tags.match(/[^ ]/).to_s.length == 0
-        IO.popen(command)
+        system(command)
       end
       
       private

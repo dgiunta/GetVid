@@ -73,19 +73,19 @@ module GetVid
     
       context "when exporting audio" do
         it "should hand off audio processing to ffmpeg" do
-          IO.should_receive(:popen).with("ffmpeg -i #{@video_output_file} #{@audio_output_file}")
+          @gv.should_receive(:system).with("ffmpeg -i #{@video_output_file} #{@audio_output_file}")
           @gv.export_audio
         end
       
         it "should not run the qt_export command if the file already exists" do
           File.should_receive(:exists?).and_return(true)
-          IO.should_not_receive(:popen)
+          @gv.should_not_receive(:system)
           @gv.export_audio
         end
         
         it "should convert the aif file to mp3" do
           @gv.should_receive(:formatted_id3_tags).any_number_of_times.and_return("")
-          IO.should_receive(:popen).with("lame -h #{@audio_output_file} #{@mp3_audio_file}")
+          @gv.should_receive(:system).with("lame -h #{@audio_output_file} #{@mp3_audio_file}")
           @gv.convert_audio_to_mp3
         end
         

@@ -10,9 +10,9 @@ print "Creating collection: "
 collection = GetVid.from_links(ARGV)
 puts "DONE"
 
-# print "Downloading files: "
-# collection.download
-# puts "DONE"
+print "Downloading files: "
+collection.download
+puts "DONE"
 
 print "Extracting audio: "
 collection.export_audio
@@ -22,6 +22,6 @@ print "Converting to MP3s: "
 collection.convert_audio_to_mp3
 puts "DONE"
 
-# print "Creating zip files: "
-# collection.make_zips
-# puts "DONE"
+print "Creating zip files: "
+collection.make_zips
+puts "DONE"
