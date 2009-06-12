@@ -73,7 +73,7 @@ module GetVid
     
       context "when exporting audio" do
         it "should hand off audio processing to ffmpeg" do
-          @gv.should_receive(:system).with("ffmpeg -i #{@video_output_file} #{@audio_output_file}")
+          Open3.should_receive(:popen3).with("ffmpeg -i #{@video_output_file} #{@audio_output_file}")
           @gv.export_audio
         end
       
