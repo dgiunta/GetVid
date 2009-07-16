@@ -1,4 +1,4 @@
-require File.join File.dirname(__FILE__), "../spec_helper"
+require File.join(File.dirname(__FILE__), "../spec_helper")
 require 'time'
 
 module GetVid
@@ -8,7 +8,7 @@ module GetVid
         conf.output_dir = fixture_path_for("TestOutput")
       end
       @output_dir = File.expand_path(fixture_path_for("TestOutput"))
-      Time.stub!(:now).and_return(Time.parse("Sun Jun 07 12:28:22 -0500 2009"))
+      Time.stub!(:now).and_return(Time.parse("Sun Jun 07 12:28:22 -0000 2009").getutc)
 
       @video = Video::Base.new("http://youtube.com")
       @collection = Collection.new([@video])

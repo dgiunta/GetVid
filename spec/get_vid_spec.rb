@@ -1,4 +1,4 @@
-require File.join File.dirname(__FILE__), "spec_helper"
+require File.join(File.dirname(__FILE__), "spec_helper")
 
 describe GetVid, ".from_links" do
   it "should pass the passed in links to Video.links" do
