@@ -20,11 +20,14 @@ By default the binary will download the video files using <code>wget</code>, and
 
 h2. Dependencies
 
-* <code>wget</code> for downloading the files. I would really like to remove this dependency, but unfortunately, I can't seem to get the various Ruby utilities to follow the necessary redirects. More on this in a moment.
-* <code>QuickTime</code> This does not have to be the Pro version, but is necessary to rip the audio.
-* <code>qt_tools</code> for exporting the audio from the downloaded video to AIFF format. This is another dependency I wouldn't mind breaking, but it's really fast and does the job rather well. I believe these tools only work on Unix-based systems.
-* <code>http://keepvid.com</code> This site is used by the application to get the url to the actual mp4 files on YouTube's servers. For the moment, this script is just parsing out the HTML looking for the download link supplied by keepvid.com. This would be another dependency that would be nice to internalize... perhaps to do the work that keepvid.com is doing internally.
+* We now use ffmpeg and the lame encoder which is tricky to get installed, but once you do, everything else is pretty easy-peasy.
+* [FIXED - No longer a dependency] <code>wget</code> for downloading the files. I would really like to remove this dependency, but unfortunately, I can't seem to get the various Ruby utilities to follow the necessary redirects. More on this in a moment.
+* [FIXED - No longer a dependency] <code>QuickTime</code> This does not have to be the Pro version, but is necessary to rip the audio.
+* [FIXED - No longer a dependency] <code>qt_tools</code> for exporting the audio from the downloaded video to AIFF format. This is another dependency I wouldn't mind breaking, but it's really fast and does the job rather well. I believe these tools only work on Unix-based systems.
+* [FIXED - No longer a dependency] <code>http://keepvid.com</code> This site is used by the application to get the url to the actual mp4 files on YouTube's servers. For the moment, this script is just parsing out the HTML looking for the download link supplied by keepvid.com. This would be another dependency that would be nice to internalize... perhaps to do the work that keepvid.com is doing internally.
 
 h2. Coming Soon
 
-I am hoping to build a Sinatra web application similar to keepvid.com that will allow you to hand a bunch of youtube urls to it, and then download the resulting files. Stay tuned.
+-I am hoping to build a Sinatra web application similar to keepvid.com that will allow you to hand a bunch of youtube urls to it, and then download the resulting files. Stay tuned.- DONE!
+
+I have written a GetVid Sinatra application, though it's not for public consumption. It was actually pretty easy, all things considered, and was a great project to get up on its feet. Perhaps at some point I'll share. :)
