@@ -30,4 +30,4 @@ h2. Coming Soon
 
 -I am hoping to build a Sinatra web application similar to keepvid.com that will allow you to hand a bunch of youtube urls to it, and then download the resulting files. Stay tuned.- DONE!
 
-I have written a GetVid Sinatra application, though it's not for public consumption. It was actually pretty easy, all things considered, and was a great project to get up on its feet. Perhaps at some point I'll share. :)
+I have written a GetVid Sinatra application, though it's not for public consumption. It was actually pretty easy, all things considered, and was a great project to get up on its feet. Perhaps at some point I'll share.
